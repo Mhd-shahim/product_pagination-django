@@ -1,5 +1,7 @@
 from rest_framework.generics import ListAPIView
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.views import APIView
+from rest_framework.response import Response
 from .models import Product
 from .serializers import ProductSerializer
 
@@ -12,3 +14,10 @@ class ProductListAPIView(ListAPIView):
     queryset = Product.objects.all().order_by('-id')
     serializer_class = ProductSerializer
     pagination_class = ProductPagination
+
+
+class ProductCountAPIView(APIView):
+    """Returns the total count of products."""
+    def get(self, request, *args, **kwargs):
+        count = Product.objects.count()
+        return Response({'count': count})
